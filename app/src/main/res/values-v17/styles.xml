@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="TextView.Info.Icon" parent="TextView.Info">
+        <item name="android:textAlignment">center</item>
+        <item name="android:textStyle">bold</item>
+        <item name="drawableTint">?colorSecondaryVariant</item>
+        <item name="android:drawablePadding">@dimen/drawable_padding</item>
+    </style>
+
+</resources>
