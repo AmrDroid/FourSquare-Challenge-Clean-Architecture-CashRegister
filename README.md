@@ -7,13 +7,21 @@ pattern as well as Architecture Components.
 This app:
 
 -Displays the nearby places to the user based on the user current location in a list.
+
 -Presents a detail page for each place. 
+
 -Displays cached data if user moves by 500m from the last retrieved location. 
+
 -Presents Offline data when the internet is unavailable or user is still at the same location or nearby places are the same.
+
 -Updates the nearby places when user is replaced.
+
 -Displays an endless list of nearby places.
+
 -option to switch between live and single update mode.
+
 -search functionality to filter places
+
 -Checks the internet connection using NetworkStateBroadcastReceiver.
 
 
