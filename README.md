@@ -144,3 +144,10 @@ Libraries used in the whole application are:
 <p align="center">
   <img src="screens/tests.PNG" width="600">
 </p>
+
+
+#### Tests For Cash Register Module
+
+<p align="center">
+  <img src="screens/tests2.PNG" width="600">
+</p>
