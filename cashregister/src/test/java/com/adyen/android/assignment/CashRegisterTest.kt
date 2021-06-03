@@ -15,7 +15,7 @@ class CashRegisterTest {
         val cashRegister =
             CashRegister(cashRegisterChange)
         val customerCash = Change.max()
-        val price = -1L
+        val price = -2L
 
         val result = assertThrows(CashRegister.TransactionException::class.java) {
             cashRegister.performTransaction(price, customerCash)
@@ -45,7 +45,7 @@ class CashRegisterTest {
         val cashRegister =
             CashRegister(cashRegisterChange)
         val customerCash = Change.none()
-        val price = 100L
+        val price = 200L
 
         val result = assertThrows(CashRegister.TransactionException::class.java) {
             cashRegister.performTransaction(price, customerCash)
@@ -59,7 +59,7 @@ class CashRegisterTest {
         val cashRegister =
             CashRegister(cashRegisterChange)
         val customerCash = Change.max()
-        val price = 100L
+        val price = 200L
 
         val result = assertThrows(CashRegister.TransactionException::class.java) {
             cashRegister.performTransaction(price, customerCash)
@@ -74,7 +74,7 @@ class CashRegisterTest {
             CashRegister(cashRegisterChange)
         val customerCash = Change()
             .add(Bill.ONE_HUNDRED_EURO, 2)
-        val price = 1000L
+        val price = 2000L
 
         val result = assertThrows(CashRegister.TransactionException::class.java) {
             cashRegister.performTransaction(price, customerCash)
@@ -91,7 +91,6 @@ class CashRegisterTest {
             .add(Bill.TEN_EURO, 200)
             .add(Bill.FIVE_EURO, 200)
             .add(Bill.TWENTY_EURO, 100)
-            .add(Coin.TWO_EURO, 100)
             .add(Coin.ONE_EURO, 500)
 
 
@@ -100,7 +99,7 @@ class CashRegisterTest {
         val customerCash = Change()
             .add(Bill.FIVE_HUNDRED_EURO, 1)
 
-        val price = 10200L
+        val price = 10400L
 
         val result = cashRegister.performTransaction(price, customerCash)
 
@@ -109,7 +108,6 @@ class CashRegisterTest {
             .add(Bill.FIFTY_EURO, 1)
             .add(Bill.TWENTY_EURO, 2)
             .add(Bill.FIVE_EURO, 1)
-            .add(Coin.TWO_EURO, 1)
             .add(Coin.ONE_EURO, 1)
 
         assertEquals(expectedChange, result)
@@ -121,7 +119,6 @@ class CashRegisterTest {
             .add(Bill.ONE_HUNDRED_EURO, 5)
             .add(Bill.FIVE_EURO, 1)
             .add(Coin.FIFTY_CENT, 1)
-            .add(Coin.TEN_CENT, 5)
             .add(Coin.FIVE_CENT, 10)
             .add(Coin.ONE_CENT, 120)
         val cashRegister =
@@ -129,14 +126,12 @@ class CashRegisterTest {
         val customerCash = Change()
             .add(Bill.FIVE_EURO, 1)
 
-        val price = 300L
+        val price = 400L
 
         val result = cashRegister.performTransaction(price, customerCash)
         val expectedChange = Change()
             .add(Coin.FIFTY_CENT, 1)
-            .add(Coin.TEN_CENT, 5)
             .add(Coin.FIVE_CENT, 10)
-            .add(Coin.ONE_CENT, 50)
 
         assertEquals(expectedChange, result)
     }
@@ -149,7 +144,6 @@ class CashRegisterTest {
             .add(Coin.FIFTY_CENT, 1)
             .add(Coin.TEN_CENT, 5)
             .add(Coin.FIVE_CENT, 10)
-            .add(Coin.ONE_CENT, 120)
         val cashRegister =
             CashRegister(cashRegisterChange)
         val customerCash = Change()
@@ -162,13 +156,14 @@ class CashRegisterTest {
     }
 
     @Test
-    fun give_back_76() {
+    fun give_back_98() {
         val cashRegisterChange = Change()
             .add(Bill.FIVE_HUNDRED_EURO, 5)
             .add(Bill.FIFTY_EURO, 5)
             .add(Bill.TWENTY_EURO, 5)
             .add(Bill.FIVE_EURO, 5)
             .add(Coin.TWO_EURO, 5)
+            .add(Coin.ONE_EURO, 5)
 
         val cashRegister =
             CashRegister(cashRegisterChange)
@@ -176,12 +171,14 @@ class CashRegisterTest {
         val customerCash = Change()
             .add(Bill.ONE_HUNDRED_EURO, 1)
 
-        val price = 2400L
+        val price = 200L
         val result = cashRegister.performTransaction(price, customerCash)
         val expectedChange = Change()
             .add(Bill.FIFTY_EURO, 1)
-            .add(Bill.TWENTY_EURO, 1)
-            .add(Coin.TWO_EURO, 3)
+            .add(Bill.TWENTY_EURO, 2)
+            .add(Bill.FIVE_EURO, 1)
+            .add(Coin.TWO_EURO, 1)
+            .add(Coin.ONE_EURO, 1)
 
         assertEquals(expectedChange, result)
     }
