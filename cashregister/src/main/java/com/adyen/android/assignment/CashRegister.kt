@@ -34,7 +34,6 @@ class CashRegister() {
         //difference between price and the user payment
         val payDiff: Long = amountPaid.total - price
 
-        //invalid cases
         if (price <= 0) {
             throw TransactionException("Price is not valid", IllegalArgumentException())
         } else if (price > amountPaid.total) {
@@ -44,17 +43,20 @@ class CashRegister() {
         }
 
         //Add customer money to our cash
-        addCustomerMoneyToCash(amountPaid)
+        amountPaid.getElements().forEach(Consumer { element: MonetaryElement ->
+            cash.add(
+                element, amountPaid.getCount(
+                    element
+                )
+            )
+            amountPaid.remove(element, amountPaid.getCount(element))
+        })
 
-        //if the customer paid the exact amount then return empty Change
         if (payDiff == 0L) {
             return Change()
         }
-
-        //This is the amount we are going to payback
         val returnChange = Change()
 
-        //To reduce amount of items we return we have to start from the biggest value monetary
         val sortedMonetaryItems: LinkedList<MonetaryElement> = LinkedList(cash.getElements())
         sortedMonetaryItems.sortWith { o1: MonetaryElement, o2: MonetaryElement -> o2.minorValue - o1.minorValue }
 
@@ -85,18 +87,6 @@ class CashRegister() {
 
     }
 
-    //add customer money to our cash
-    private fun addCustomerMoneyToCash(amountPaid: Change) {
-        amountPaid.getElements().forEach(Consumer { element: MonetaryElement ->
-            cash.add(
-                element, amountPaid.getCount(
-                    element
-                )
-            )
-            amountPaid.remove(element, amountPaid.getCount(element))
-        })
-    }
-
     private fun possiblePayment(
         stack: Stack<Int?>,
         monetaryItems: LinkedList<MonetaryElement>,
@@ -114,7 +104,7 @@ class CashRegister() {
         else {
             for (i in index until size) {
                 val element = monetaryItems[i]
-                // try this partial candidate solution
+
                 while (element.minorValue <= payDiff &&
                     cash.getElements().contains(element) && cash.getCount(element) != 0 && possiblePayment.isEmpty())
                 {
@@ -123,10 +113,8 @@ class CashRegister() {
                     returnChange.add(element, 1)
                     stack.push(element.minorValue)
                 }
-                // given the candidate, explore further
                 possiblePayment(stack, monetaryItems, payDiff, returnChange, size, index + 1, possiblePayment)
 
-                //backtrack
                 if (stack.peek() == monetaryItems[i].minorValue && possiblePayment.isEmpty()) {
                     val lasElement = monetaryItems[i]
                     payDiff = payDiff + lasElement.minorValue

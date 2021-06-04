@@ -8,7 +8,20 @@ import org.junit.Test
 
 class CashRegisterTest {
 
+    @Test
+    fun price_zero_test() {
+        val cashRegisterChange = Change.max()
+        val cashRegister =
+            CashRegister(cashRegisterChange)
+        val customerCash = Change.max()
+        val price = 0L
 
+        val result = assertThrows(CashRegister.TransactionException::class.java) {
+            cashRegister.performTransaction(price, customerCash)
+        }
+        assertEquals("Price is not valid", result.message)
+        assertTrue(result.cause is IllegalArgumentException)
+    }
     @Test
     fun price_negative_test() {
         val cashRegisterChange = Change.max()
@@ -25,20 +38,18 @@ class CashRegisterTest {
     }
 
     @Test
-    fun price_zero_test() {
-        val cashRegisterChange = Change.max()
+    fun merchant_has_not_enough_money() {
+        val cashRegisterChange = Change.none()
         val cashRegister =
             CashRegister(cashRegisterChange)
         val customerCash = Change.max()
-        val price = 0L
+        val price = 200L
 
         val result = assertThrows(CashRegister.TransactionException::class.java) {
             cashRegister.performTransaction(price, customerCash)
         }
-        assertEquals("Price is not valid", result.message)
-        assertTrue(result.cause is IllegalArgumentException)
+        assertEquals("CashRegister has not enough money", result.message)
     }
-
     @Test
     fun customer_has_not_enough_money() {
         val cashRegisterChange = Change.max()
@@ -53,19 +64,6 @@ class CashRegisterTest {
         assertEquals("Customer has not enough money", result.message)
     }
 
-    @Test
-    fun merchant_has_not_enough_money() {
-        val cashRegisterChange = Change.none()
-        val cashRegister =
-            CashRegister(cashRegisterChange)
-        val customerCash = Change.max()
-        val price = 200L
-
-        val result = assertThrows(CashRegister.TransactionException::class.java) {
-            cashRegister.performTransaction(price, customerCash)
-        }
-        assertEquals("CashRegister has not enough money", result.message)
-    }
 
     @Test
     fun merchant_has_not_exact_return_value() {
